@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quero Vender | Systech Pump</title>
+  <link rel="stylesheet" href="../../public/css/vender1.css">
+  <link rel="shortcut icon" href="../../public/imgs/others/logo.png" type="image/png" />
+</head>
+<body>
+
+  <h1>Quero vender produtos Pump</h1>
+  <p>Escolha abaixo a sua opção e preencha o formulário</p>
+
+  <div class="opcoes">
+    <div class="opcao" onclick="mostrarFormulario('lojista')">
+      <img src="../../public/imgs/others/loja.jpg" alt="Imagem de loja">
+      <button>Sou lojista</button>
+    </div>
+    <div class="opcao" onclick="mostrarFormulario('representante')">
+      <img src="../../public/imgs/others/representante.jpg" alt="Imagem de representante">
+      <button>Sou representante</button>
+    </div>
+  </div>
+
+  <div id="formulario-container">
+    <h2 id="formulario-titulo" style="margin-bottom: 20px;"></h2>
+    <form onsubmit="enviarFormulario(event)">
+      <div style="text-align: left; margin-bottom: 15px;">
+        <label for="nome"><strong>Nome:</strong></label><br>
+        <input type="text" id="nome" name="nome" style="width: 100%; padding: 10px;" required>
+      </div>
+
+      <div style="text-align: left; margin-bottom: 15px;">
+        <label for="cnpj"><strong>CNPJ:</strong></label><br>
+        <input type="text" id="cnpj" name="cnpj" style="width: 100%; padding: 10px;" required>
+      </div>
+
+      <div style="text-align: left; margin-bottom: 15px;">
+        <label for="email"><strong>E-mail:</strong></label><br>
+        <input type="email" id="email" name="email" style="width: 100%; padding: 10px;" required>
+      </div>
+
+      <div style="text-align: left; margin-bottom: 15px;">
+        <label for="telefone"><strong>Telefone:</strong></label><br>
+        <input type="tel" id="telefone" name="telefone" style="width: 100%; padding: 10px;" required>
+      </div>
+
+      <div style="text-align: left; margin-bottom: 25px;">
+        <label for="mensagem"><strong>Mensagem:</strong></label><br>
+        <textarea id="mensagem" name="mensagem" rows="4" placeholder="Sou a loja X e quero vender produtos porque minha região é top" style="width: 100%; padding: 10px;" required></textarea>
+      </div>
+
+      <button type="submit" style="background-color: #003f8c; color: white; padding: 12px 30px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer;">
+        Enviar
+      </button>
+    </form>
+  </div>
+
+  <div id="mensagem-sucesso">
+    <div style="font-size: 50px; color: #28a745;">✅</div>
+    <h3 style="margin-top: 15px; color: #003f8c;">Mensagem enviada com sucesso!</h3>
+    <p style="color: #444; max-width: 500px; margin: 10px auto;">
+      Agradecemos seu interesse em representar ou vender nossos produtos.<br>
+      Em breve, nossa equipe entrará em contato com você pelo e-mail ou telefone informado.<br><br>
+      💙 Obrigado por escolher a <strong>Systech Pump</strong>.
+    </p>
+  </div>
+
+
+<script src="../../public/js/vender.js"></script>
+</body>
+</html>

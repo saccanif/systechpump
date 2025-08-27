@@ -1,0 +1,45 @@
+.content-container {
+  padding: 40px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.form-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-box label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-box input[type="text"],
+.form-box input[type="email"],
+.form-box input[type="file"] {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-box button {
+  background-color: #004aad;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.form-box button:hover {
+  background-color: #00337a;
+}

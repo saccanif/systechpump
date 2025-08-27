@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body, html {
+    height: 100%;
+}
+
+.background {
+    background: url('../imgs/fundos/fundo-login.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    top: 40px;
+    left: 50px;
+}
+
+.logo img {
+    height: 100px;
+}
+
+.center {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    width: 500px;
+    height: 500px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #1a3c6e;
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.input-field {
+    width: 100%;
+    padding: 16px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 30px;
+    color: #0f4c81;
+    outline: none;
+    font-size: 16px;
+    border: 3px #0f4c81 solid;
+}
+
+.input-field::placeholder {
+    color: #0f4c81;
+    opacity: 0.8;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 30px;
+    color: #0f4c81;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+    border: 3px #0f4c81 solid;
+}
+
+.login-btn:hover {
+    background-color: #0f4c81;
+    color: white;
+}
+
+.forgot {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+    color: #1a3c6e;
+    text-decoration: none;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
