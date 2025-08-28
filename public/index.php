@@ -37,7 +37,7 @@
           <li><a href="#produtos">Produtos</a></li>
           <li><a href="../src/view/vender1.html">Quero vender</a></li>
           <li><a href="#fale-conosco">Fale conosco</a></li>
-          <li><a href="./representanteHome.php">Entrar</a></li>
+          <li><a href="./login.php">Entrar</a></li>
         </ul>
       </nav>
     </div>
@@ -474,10 +474,29 @@
             <li><a href="#produtos">Produtos</a></li>
             <li><a href="../src/view/vender1.html">Quero vender</a></li>
             <li><a href="#fale-conosco">Fale conosco</a></li>
-            <li><a href="./representanteHome.php">Entrar</a></li>
           </ul>
         </nav>
       </section>
+
+      <section class="footer-section">
+          <div>
+            <h4>Redes Sociais</h4>
+            <ul>
+              <li>
+                <a target="_blank" href="tel:+552799999999">+55 27 99999999</a>
+              </li>
+              <li>
+                <a target="_blank" href="https://www.instagram.com/systechpump/">Instagram</a>
+              </li>
+              <li>
+                <a target="_blank"
+                  href="https://www.google.com/maps/place/Bar+e+Restaurante+do+Neg%C3%A3o/@-19.5012677,-40.6605974,17.5z/data=!4m6!3m5!1s0xb707392e3d999f:0xbbbe51be57fd6059!8m2!3d-19.5006671!4d-40.660048!16s%2Fg%2F11f3cbtv7m?entry=ttu&g_ep=EgoyMDI1MDQxNC4xIKXMDSoASAFQAw%3D%3D">Localização
+                </a>
+              </li>
+            </ul>
+          </div>
+      </section>
+      
       <section class="footer-section">
         <nav>
           <h4>Produtos</h4>
@@ -488,23 +507,6 @@
             <li><a href="../src/view/linhas/linha-s.html">Linha S</a></li>
           </ul>
         </nav>
-      </section>
-      <section class="footer-section">
-        <div>
-          <h4>Redes Sociais</h4>
-          <ul>
-            <li>
-              <a target="_blank" href="tel:+552799999999">+55 27 99999999</a>
-            </li>
-            <li>
-              <a target="_blank" href="https://www.instagram.com/systechpump/">Instagram</a>
-            </li>
-            <li>
-              <a target="_blank"
-                href="https://www.google.com/maps/place/Bar+e+Restaurante+do+Neg%C3%A3o/@-19.5012677,-40.6605974,17.5z/data=!4m6!3m5!1s0xb707392e3d999f:0xbbbe51be57fd6059!8m2!3d-19.5006671!4d-40.660048!16s%2Fg%2F11f3cbtv7m?entry=ttu&g_ep=EgoyMDI1MDQxNC4xIKXMDSoASAFQAw%3D%3D">Localização</a>
-            </li>
-          </ul>
-        </div>
       </section>
     </div>
   </footer>

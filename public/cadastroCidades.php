@@ -70,8 +70,18 @@
           <label for="nomeCidade">Nome da Cidade</label>
           <input type="text" id="nomeCidade" name="nomeCidade" />
 
-          <label for="idEstado">Estado ID</label>
-          <input type="text" id="idEstado" name="idEstado" />
+          <label for="idEstado">Estado</label>
+          <select name="idEstado" id="idEstado" required>
+                <option value="" disabled selected>Escolha um estado</option>
+                <?php
+                  require_once '../config/connection.php';
+                  $sqlEstado = "SELECT idEstado, nomeEstado FROM estado ORDER BY nomeEstado";
+                  $resEstado = mysqli_query(conectarBD(), $sqlEstado);
+                  while ($estado = mysqli_fetch_assoc($resEstado)) {
+                    echo "<option value='{$estado['idEstado']}'>{$estado['nomeEstado']}</option>";
+                  }
+                ?>
+          </select>
 
           <button type="submit">Cadastrar Cidade</button>
         </form>

@@ -582,7 +582,7 @@ footer {
 }
 
 .footer-section {
-  display: flex;
+  display:flexbox;
   flex-direction: column;
   align-items: center;
   justify-content: center;

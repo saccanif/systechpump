@@ -2,7 +2,7 @@
   session_start();
   require_once 'functions.php';
 
-  if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'representante') {
+  if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'loja') {
       header('Location: ./login.php');
       exit();
   }
@@ -12,7 +12,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel do Representante - Systech Pump</title>
+  <title>Painel da Loja - Systech Pump</title>
   <link rel="stylesheet" href="./css/representanteHome.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="shortcut icon" href="./imgs/others/logo.png" type="image/png" />
@@ -23,7 +23,7 @@
     <div class="user">
       <img src="./imgs/others/representante.jpg" alt="Usuário">
       <span><?php echo $_SESSION['usuario']['nomeUsuario']; ?></span>
-      <small>Representante</small>
+      <small>Loja</small>
     </div>
     <ul>
       <li>
@@ -38,8 +38,8 @@
         </a>    
       </li>
       <li>
-        <a href="./vendas.php">
-          <i class="fa fa-chart-line"></i> Minhas Vendas
+        <a href="./estoque.php">
+          <i class="fa fa-boxes"></i> Estoque
         </a>
       </li>
     </ul>
@@ -63,7 +63,7 @@
 
   <div class="main">
     <div class="topbar">
-      <h2>Painel do Representante</h2>
+      <h2>Painel da Loja</h2>
       <div class="logo">
         <img src="./imgs/others/logo-branco.png" alt="Systech Pump">
       </div>
@@ -71,7 +71,7 @@
     
     <div class="content">
       <h1>Bem-vindo, <?php echo $_SESSION['usuario']['nomeUsuario']; ?>!</h1>
-      <p>Seu cargo: <strong>Representante</strong></p>
+      <p>Seu cargo: <strong>Loja</strong></p>
     </div>
   </div>
 

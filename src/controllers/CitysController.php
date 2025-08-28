@@ -24,5 +24,5 @@
 
     $cod = mysqli_insert_id($conexao);
 
-    header("Location:../../public/cadastroCidades.php?msg=Cidade $cod inserida com sucesso!");
+    header("Location:../../public/cadastroCidades.php?msg=Cidade $nomeCidade inserida com sucesso!");
 ?>
