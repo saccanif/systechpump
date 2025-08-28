@@ -1,12 +1,4 @@
-<?php
-  session_start();
-  require_once 'functions.php';
 
-  if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'administrador') {
-      header('Location: ./login.php');
-      exit();
-  }
-?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,15 +14,9 @@
   <div class="sidebar">
     <div class="user">
       <img src="./imgs/others/representante.jpg" alt="Usuário">
-      <span><?php echo $_SESSION['usuario']['nomeUsuario']; ?></span>
       <small>Administrador</small>
     </div>
     <ul>
-      <li>
-        <a href="<?php echo getHomePage(); ?>">
-          <i class="fa fa-home"></i> Home
-        </a>
-      </li>
       <li>
         <a href="./pedidos.php">
             <i class="fa fa-chart-bar"></i>
@@ -38,12 +24,12 @@
         </a>    
       </li>
       <li>
-        <a href="./cadastroStores.php">
+        <a href="./cadastroStoresAdm.php">
           <i class="fa fa-store"></i> Cadastrar Lojas
         </a>
       </li>
       <li>
-        <a href="./cadastroCidades.php">
+        <a href="./cadastroCidadesAdm.php">
             <i class="fa fa-city"></i> Cadastrar Cidades
         </a>
       </li>
@@ -73,11 +59,7 @@
         <img src="./imgs/others/logo-branco.png" alt="Systech Pump">
       </div>
     </div>
-    
-    <div class="content">
-      <h1>Bem-vindo, <?php echo $_SESSION['usuario']['nomeUsuario']; ?>!</h1>
-      <p>Seu cargo: <strong>Administrador</strong></p>
-    </div>
+  
   </div>
 
 </body>

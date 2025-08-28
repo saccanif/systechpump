@@ -1,79 +1,73 @@
-<?php
-  session_start();
-  require_once 'functions.php';
-
-  if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'representante') {
-      header('Location: ./login.php');
-      exit();
-  }
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel do Representante - Systech Pump</title>
+  <title>Cadastrar Cidade - Systech Pump</title>
   <link rel="stylesheet" href="./css/representanteHome.css" />
+  <link rel="stylesheet" href="./css/cadastroStores.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="shortcut icon" href="./imgs/others/logo.png" type="image/png" />
 </head>
-<body>
 
+<body>
   <div class="sidebar">
     <div class="user">
-      <img src="./imgs/others/representante.jpg" alt="Usuário">
-      <span><?php echo $_SESSION['usuario']['nomeUsuario']; ?></span>
-      <small>Representante</small>
+      <img src="./imgs/others/representante.jpg" alt="Usuário" />
+      <span>Representante</span>
     </div>
     <ul>
       <li>
-        <a href="<?php echo getHomePage(); ?>">
+        <a href="./representanteHome.php">
           <i class="fa fa-home"></i> Home
         </a>
       </li>
       <li>
-        <a href="./pedidos.php">
-            <i class="fa fa-shopping-cart"></i>
-            <span>Pedidos</span>
-        </a>    
+        <a href="#">
+          <i class="fa fa-store"></i> 
+          Pedidos
+        </a>
       </li>
       <li>
-        <a href="./vendas.php">
-          <i class="fa fa-chart-line"></i> Minhas Vendas
+        <a href="./cadastroStoresRepre.php">
+          <i class="fa fa-cart-plus"></i> Cadastrar lojas
+        </a>
+      </li>
+      <li>
+        <a href="./cadastroCidadesRepre.php">
+          <i class="fa fa-city"></i> Cadastrar Cidades
         </a>
       </li>
     </ul>
-
-    <div class="bottom-menu">   
+    <div class="bottom-menu">
       <ul>
-        <li>
-          <a href="./config.php">
-            <i class="fa fa-cog"></i> Configurações
-          </a>
-        </li>
-        <li>
-          <a href="./logout.php">
-            <i class="fa fa-sign-out-alt"></i>
-            <span>Sair</span>
-          </a>    
-        </li>
-      </ul>
+            <li>
+                <a href="./config.php">
+                    <i class="fa fa-home"></i> Configurações
+                </a>
+            </li>
+            <li>
+                <a href="./index.php">
+                    <i class="fa fa-store"></i>
+                    <span>Sair</span>
+                </a>    
+            </li>
+        </ul>
     </div>
+  </div>
   </div>
 
   <div class="main">
     <div class="topbar">
-      <h2>Painel do Representante</h2>
+      <h2>Cadastrar Cidade</h2>
       <div class="logo">
-        <img src="./imgs/others/logo-branco.png" alt="Systech Pump">
+        <img src="./imgs/others/logo-branco.png" alt="logo loja" />
       </div>
     </div>
-    
-    <div class="content">
-      <h1>Bem-vindo, <?php echo $_SESSION['usuario']['nomeUsuario']; ?>!</h1>
-      <p>Seu cargo: <strong>Representante</strong></p>
     </div>
   </div>
 
+  
+  
 </body>
 </html>
+

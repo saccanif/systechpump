@@ -23,6 +23,18 @@
     mysqli_query($conexao, $sql);
 
     $cod = mysqli_insert_id($conexao);
-
-    header("Location:../../public/cadastroCidades.php?msg=Cidade $nomeCidade inserida com sucesso!");
+    
+    if ($sucesso) {
+        switch ($user['tipoUsuario']) {
+            case 'admin':
+                header('Location:../../public/cadastroCidadesAdm.php?msg=Cidade $nomeCidade inserida com sucesso!');
+                exit();
+            case 'representante':
+                header('Location:../../public/cadastroCidadesRepre.php?msg=Cidade $nomeCidade inserida com sucesso!');
+                exit();
+        }
+    } else {
+        header('Location:../../public/cadastroCidadesRepre.php?msg=Cidade $nomeCidade não inserida!');
+        exit();
+    }
 ?>

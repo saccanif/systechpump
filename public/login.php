@@ -23,13 +23,6 @@
     </div>
   </header>
 
-  <?php
-    if (isset($_GET['erro'])) {
-        echo '<div style="background-color: #fee2e2; color: #dc2626; padding: 12px; border-radius: 8px; margin: 20px 0; text-align: center;">';
-        echo htmlspecialchars($_GET['erro']);
-        echo '</div>';
-    }
-  ?>
 
   <!-- Conteúdo principal -->
   <main>
@@ -57,9 +50,18 @@
         <div class="actions">
           <button type="submit" class="btn btn-primary">Entrar</button>
         </div>
+        <?php
+          if (isset($_GET['erro'])) {
+              echo '<div style="background-color: #fee2e2; color: #dc2626; padding: 12px; border-radius: 8px; margin: 20px 0; text-align: center;">';
+              echo htmlspecialchars($_GET['erro']);
+              echo '</div>';
+          }
+        ?>
       </form>
     </div>
   </main>
+
+ 
 
   <!-- Footer -->
   <footer class="site">

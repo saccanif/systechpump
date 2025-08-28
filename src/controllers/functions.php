@@ -60,24 +60,6 @@
         return $foto;
     }
 
-
-    function getHomePage() {
-        if (!isset($_SESSION['usuario'])) {
-            return 'login.php';
-        }
-        
-        switch ($_SESSION['usuario']['tipoUsuario']) {
-            case 'administrador':
-                return 'admHome.php';
-            case 'representante':
-                return 'representanteHome.php';
-            case 'loja':
-                return 'lojaHome.php';
-            default:
-                return 'index.php';
-        }
-    }
-
 ?>
 
 

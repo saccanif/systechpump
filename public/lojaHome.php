@@ -1,12 +1,4 @@
-<?php
-  session_start();
-  require_once 'functions.php';
 
-  if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'loja') {
-      header('Location: ./login.php');
-      exit();
-  }
-?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,12 +14,11 @@
   <div class="sidebar">
     <div class="user">
       <img src="./imgs/others/representante.jpg" alt="Usuário">
-      <span><?php echo $_SESSION['usuario']['nomeUsuario']; ?></span>
       <small>Loja</small>
     </div>
     <ul>
       <li>
-        <a href="<?php echo getHomePage(); ?>">
+        <a href="./lojaHome.php">
           <i class="fa fa-home"></i> Home
         </a>
       </li>
@@ -68,11 +59,7 @@
         <img src="./imgs/others/logo-branco.png" alt="Systech Pump">
       </div>
     </div>
-    
-    <div class="content">
-      <h1>Bem-vindo, <?php echo $_SESSION['usuario']['nomeUsuario']; ?>!</h1>
-      <p>Seu cargo: <strong>Loja</strong></p>
-    </div>
+
   </div>
 
 </body>
