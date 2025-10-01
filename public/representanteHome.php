@@ -37,6 +37,11 @@
           <i class="fa fa-city"></i> Cadastrar Cidades
         </a>
       </li>
+      <li>
+        <a href="./deletarLojaRepre.php">
+          <i class="fa fa-delete"></i> Deletar Lojas
+        </a>
+      </li>
     </ul>
     <div class="bottom-menu">
       <ul>
