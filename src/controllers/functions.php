@@ -1,5 +1,22 @@
 <?php
 
+    // Conexão com o BD
+    function conectarBD() {
+
+    $conexao = mysqli_connect("127.0.0.1:3306", "root", "", "tipi" );
+    
+    // PARA RESOLVER PROBLEMAS DE ACENTUAÇÃO 
+    // Converte CODIFICAÇÃO para UTF-8
+     mysqli_query($conexao, "SET NAMES 'utf8'");
+     mysqli_query($conexao, "SET character_set_connection=utf8");
+     mysqli_query($conexao, "SET character_set_client=utf8");
+     mysqli_query($conexao, "SET character_set_results=utf8");
+    
+    
+    return $conexao;
+
+}
+
     // funções de validação
 
     function ValidarCadastro ($email,$senha) {
@@ -70,6 +87,28 @@
         $stmtLoja->close();
     }
 
+    function alterarLoja($id, $nome, $telefone, $email, $arquivo) {
+
+    $conexao = conectarBD();   
+    
+    // Converter a imagem
+    $tamanhoImg = $arquivo["size"]; 
+    $arqAberto = fopen ( $arquivo["tmp_name"], "r" );
+    $foto = addslashes( fread ( $arqAberto , $tamanhoImg ) );
+
+    // Montar SQL
+    $sql = "UPDATE lojas SET "
+
+    . "nomeLoja = '$nome', "
+    . "telefoneLoja = '$telefone', "
+    . "emailLoja = '$email', "
+    . "fotoLoja = '$foto' "
+    . "WHERE idLoja = $id";
+
+    mysqli_query($conexao, $sql) or die ( mysqli_error($conexao) . $sql );  
+    
+    return $id;
+}
 ?>
 
 
