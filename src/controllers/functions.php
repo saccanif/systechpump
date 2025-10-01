@@ -60,6 +60,16 @@
         return $foto;
     }
 
+    function excluirLoja($idLoja, $conexao) {
+
+        // Excluir a loja
+        $sqlExcluirLoja = "DELETE FROM lojas WHERE id = ?";
+        $stmtLoja = $conexao->prepare($sqlExcluirLoja);
+        $stmtLoja->bind_param("i", $idLoja);
+        $stmtLoja->execute();
+        $stmtLoja->close();
+    }
+
 ?>
 
 
