@@ -21,6 +21,7 @@
       <li><a href="#"><i class="fa fa-store"></i> Pedidos</a></li>
       <li><a href="./cadastroStoresRepre.php"><i class="fa fa-cart-plus"></i> Cadastrar lojas</a></li>
       <li><a href="./cadastroCidadesRepre.php"><i class="fa fa-city"></i> Cadastrar Cidades</a></li>
+      <li><a href="./deletarLojaRepre.php"><i class="fa fa-delete"></i> Deletar Lojas</a></li>
     </ul>
     <div class="bottom-menu">
       <ul>
