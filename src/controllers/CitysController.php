@@ -20,18 +20,27 @@
                 0
             )";
 
-    mysqli_query($conexao, $sql);
+    $sucesso = mysqli_query($conexao, $sql);
 
     $cod = mysqli_insert_id($conexao);
     
     if ($sucesso) {
-        switch ($user['tipoUsuario']) {
-            case 'admin':
-                header('Location:../../public/cadastroCidadesAdm.php?msg=Cidade $nomeCidade inserida com sucesso!');
-                exit();
-            case 'representante':
-                header('Location:../../public/cadastroCidadesRepre.php?msg=Cidade $nomeCidade inserida com sucesso!');
-                exit();
+        // Verificar se há sessão para redirecionar corretamente
+        session_start();
+        if (isset($_SESSION['usuario'])) {
+            $user = $_SESSION['usuario'];
+            switch ($user['tipoUsuario']) {
+                case 'admin':
+                    header('Location:../../public/cadastroCidadesAdm.php?msg=Cidade $nomeCidade inserida com sucesso!');
+                    exit();
+                case 'representante':
+                    header('Location:../../public/gerenciadorCidades.php?msg=Cidade $nomeCidade inserida com sucesso!');
+                    exit();
+            }
+        } else {
+            // Fallback caso não haja sessão
+            header('Location:../../public/cadastroCidadesAdm.php?msg=Cidade $nomeCidade inserida com sucesso!');
+            exit();
         }
     } else {
         header('Location:../../public/cadastroCidadesRepre.php?msg=Cidade $nomeCidade não inserida!');

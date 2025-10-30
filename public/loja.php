@@ -1,11 +1,23 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'lojista') {
-        header("Location: login.php");
-        exit();
-    }
-?>
+session_start();
 
+// Verificação simples de sessão - MESMO PADRÃO DO adm.php
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php?erro=Faça login para acessar");
+    exit();
+}
+
+$usuario = $_SESSION['usuario'];
+
+// Verificar se o usuário é lojista
+if ($usuario['tipoUsuario'] !== 'lojista') {
+    header("Location: login.php?erro=Acesso não autorizado para lojista");
+    exit();
+}
+
+$nomeUsuario = $usuario['nomeUsuario'];
+$avatarUrl = $usuario['avatar_url'] ?? '';
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -27,10 +39,10 @@
             </div>
             
             <ul class="sidebar-menu">
-                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="./loja.php" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="./gerenciadorPedidosLojista.php"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                <li><a href="./gerenciadorRelatorios.php"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="./gerenciadorConfig.php"><i class="fas fa-cog"></i> Configurações</a></li>
                 <li><a href="./logout.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul>
         </aside>
@@ -85,7 +97,6 @@
                                         <button class="btn btn-outline"><i class="fas fa-print"></i></button>
                                     </td>
                                 </tr>
-                                <tr>
                             </tbody>
                         </table>
                     </div>
@@ -162,6 +173,5 @@
             </footer>
         </main>
     </div>
-
 </body>
 </html>

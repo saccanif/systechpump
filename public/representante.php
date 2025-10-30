@@ -1,11 +1,63 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['tipoUsuario'] !== 'representante') {
-        header("Location: login.php");
-        exit();
-    }
-?>
+session_start();
 
+// Verificação simples de sessão - MESMO PADRÃO DO adm.php
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php?erro=Faça login para acessar");
+    exit();
+}
+
+$usuario = $_SESSION['usuario'];
+
+// Verificar se o usuário é representante
+if ($usuario['tipoUsuario'] !== 'representante') {
+    header("Location: login.php?erro=Acesso não autorizado para representante");
+    exit();
+}
+
+$nomeUsuario = $usuario['nomeUsuario'];
+$avatarUrl = $usuario['avatar_url'] ?? '';
+$idUsuario = $usuario['idUsuario'];
+
+// Conexão com banco para buscar dados reais
+include_once "../config/connection.php";
+$conexao = conectarBD();
+
+// Buscar quantidade de lojas do representante
+$sql_lojas = "SELECT COUNT(*) as total FROM lojas WHERE representante_id = ?";
+$stmt_lojas = mysqli_prepare($conexao, $sql_lojas);
+mysqli_stmt_bind_param($stmt_lojas, "i", $idUsuario);
+mysqli_stmt_execute($stmt_lojas);
+$result_lojas = mysqli_stmt_get_result($stmt_lojas);
+
+if ($result_lojas) {
+    $row_lojas = mysqli_fetch_assoc($result_lojas);
+    $qtdLojas = $row_lojas ? $row_lojas['total'] : 0;
+} else {
+    $qtdLojas = 0;
+}
+
+// Buscar quantidade total de produtos no sistema
+$sql_produtos = "SELECT COUNT(*) as total FROM produtos WHERE ativoProduto = 1";
+$result_produtos = mysqli_query($conexao, $sql_produtos);
+$qtdProdutos = mysqli_fetch_assoc($result_produtos)['total'];
+
+// Buscar quantidade de pedidos das lojas do representante
+$sql_pedidos = "SELECT COUNT(*) as total FROM pedidos p 
+                INNER JOIN lojas l ON p.lojas_idlojas = l.idlojas 
+                WHERE p.representante_id = ?";
+$stmt_pedidos = mysqli_prepare($conexao, $sql_pedidos);
+mysqli_stmt_bind_param($stmt_pedidos, "i", $idUsuario);
+mysqli_stmt_execute($stmt_pedidos);
+$result_pedidos = mysqli_stmt_get_result($stmt_pedidos);
+
+if ($result_pedidos) {
+    $row_pedidos = mysqli_fetch_assoc($result_pedidos);
+    $qtdPedidos = $row_pedidos ? $row_pedidos['total'] : 0;
+} else {
+    $qtdPedidos = 0;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -16,7 +68,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/representante.css">
     <link rel="shortcut icon" href="./imgs/others/logo.png" type="image/png" />
-
 </head>
 <body>
     <div class="admin-container">
@@ -29,12 +80,12 @@
             
             <ul class="sidebar-menu">
                 <li><a href="./representante.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
-                <li><a href="#"><i class="fas fa-inbox"></i> Solicitações</a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                <li><a href="./gerenciadorRelatorios.php"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="./gerenciadorSolicitacoes.php"><i class="fas fa-inbox"></i> Solicitações</a></li>
+                <li><a href="./gerenciadorPedidos.php"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
                 <li><a href="./gerenciadorLojas.php"><i class="fas fa-store"></i> Lojas</a></li>
                 <li><a href="./gerenciadorCidades.php"><i class="fas fa-map-marker-alt"></i> Cidades</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="./gerenciadorConfig.php"><i class="fas fa-cog"></i> Configurações</a></li>
                 <li><a href="./logout.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
             </ul>
         </aside>
@@ -48,8 +99,16 @@
                 </div>
                 <div class="header-right">
                     <div class="user-info">
-                        <div class="user-avatar">RP</div>
-                        <span>Representante</span>
+                        <?php if (!empty($avatarUrl)): ?>
+                            <img src="<?= htmlspecialchars($avatarUrl) ?>" 
+                                alt="Avatar do <?= htmlspecialchars($nomeUsuario) ?>" 
+                                class="user-avatar-img" 
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="user-avatar fallback" style="display: none;"><?= strtoupper(substr($nomeUsuario, 0, 2)) ?></div>
+                        <?php else: ?>
+                            <div class="user-avatar"><?= strtoupper(substr($nomeUsuario, 0, 2)) ?></div>
+                        <?php endif; ?>
+                        <span><?= htmlspecialchars($nomeUsuario) ?></span>
                     </div>
                 </div>
             </header>
@@ -67,7 +126,7 @@
                             <i class="fa-solid fa-shop"></i>
                         </div>
                         <div class="card-info">
-                            <h3>12</h3>
+                            <h3><?= $qtdLojas ?></h3>
                             <p>Lojas</p>
                         </div>
                     </div>
@@ -77,7 +136,7 @@
                             <i class="fas fa-valve-open"></i>
                         </div>
                         <div class="card-info">
-                            <h3>2</h3>
+                            <h3>0</h3>
                             <p>Solicitações</p>
                         </div>
                     </div>
@@ -87,18 +146,18 @@
                             <i class="fa-brands fa-product-hunt"></i>
                         </div>
                         <div class="card-info">
-                            <h3>20</h3>
+                            <h3><?= $qtdProdutos ?></h3>
                             <p>Produtos</p>
                         </div>
                     </div>
                     
                     <div class="summary-card fade-in">
                         <div class="card-icon red">
-                            <i class="fas fa-map-marker-alt"></i>
+                            <i class="fas fa-shopping-cart"></i>
                         </div>
                         <div class="card-info">
-                            <h3>3</h3>
-                            <p>Cidades</p>
+                            <h3><?= $qtdPedidos ?></h3>
+                            <p>Pedidos</p>
                         </div>
                     </div>
                 </div>
@@ -148,5 +207,28 @@
         </main>
     </div>
 
+    <script>
+        // Fallback para avatares com erro de carregamento
+        document.addEventListener('DOMContentLoaded', function() {
+            const avatarImgs = document.querySelectorAll('.user-avatar-img');
+            avatarImgs.forEach(img => {
+                img.addEventListener('error', function() {
+                    this.style.display = 'none';
+                    const fallback = this.nextElementSibling;
+                    if (fallback && fallback.classList.contains('fallback')) {
+                        fallback.style.display = 'flex';
+                    }
+                });
+            });
+        });
+
+        function openModal(type) {
+            if (type === 'approve') {
+                alert('Funcionalidade de aprovação em desenvolvimento');
+            } else if (type === 'reject') {
+                alert('Funcionalidade de recusa em desenvolvimento');
+            }
+        }
+    </script>
 </body>
 </html>

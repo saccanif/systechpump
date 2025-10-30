@@ -590,3 +590,34 @@ table tr:hover {
 .hidden {
     display: none;
 }
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+.user-avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #fff;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
