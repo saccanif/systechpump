@@ -558,3 +558,90 @@ table tr:hover { background-color: rgba(0, 0, 0, 0.02); }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.875em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+/* ===== SOLICITAÇÕES ===== */
+.solicitations-list {
+    margin-top: 1rem;
+}
+
+.solicitation-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid var(--info);
+}
+
+.solicitation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.solicitation-info h4 {
+    margin-bottom: 5px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.solicitation-meta {
+    color: var(--gray);
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.solicitation-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.solicitation-body {
+    margin-top: 15px;
+}
+
+.solicitation-body p {
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.solicitation-message {
+    background-color: var(--light-gray);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-style: italic;
+    margin-top: 1rem;
+    color: var(--dark);
+}

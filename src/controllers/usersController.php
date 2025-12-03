@@ -23,28 +23,53 @@ error_log("Dados POST recebidos: " . print_r($_POST, true));
 
 // --- CADASTRAR USUÁRIO (TODOS OS TIPOS) ---
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !isset($_POST['update'])) {
-    // Verificar campos obrigatórios
-    $camposObrigatorios = ['nomeUsuario', 'emailUsuario', 'senha', 'tipoUsuario', 'idEstado', 'idCidade'];
-    $camposFaltantes = [];
-    
-    foreach ($camposObrigatorios as $campo) {
-        if (empty($_POST[$campo])) {
-            $camposFaltantes[] = $campo;
-        }
-    }
-    
-    if (!empty($camposFaltantes)) {
-        header("Location: ../../public/gerenciadorUsers.php?msg=Erro: Campos obrigatórios faltando: " . implode(', ', $camposFaltantes));
-        exit;
-    }
-
     $nomeUsuario  = $_POST["nomeUsuario"];
     $emailUsuario = $_POST["emailUsuario"];
     $senha        = $_POST["senha"];
     $tipoUsuario  = $_POST["tipoUsuario"];
     $avatar_url   = $_POST["avatar_url"] ?? '';
-    $idCidade     = intval($_POST["idCidade"]);
-    $idEstado     = intval($_POST["idEstado"]);
+    $whatsapp     = $_POST["whatsapp"] ?? '';
+    
+    // Validação específica por tipo
+    if ($tipoUsuario === 'representante') {
+        // Para representante: cidade e estado são opcionais (usados apenas para o banco)
+        // Estados para Fale Conosco são salvos em campo de texto separado
+        $idCidade = !empty($_POST['idCidade']) ? intval($_POST['idCidade']) : 0;
+        $idEstado = !empty($_POST['idEstado']) ? intval($_POST['idEstado']) : 0;
+        
+        // Se não foi informado, buscar primeira cidade/estado como padrão
+        if ($idCidade == 0) {
+            $sql_default_cidade = "SELECT idCidade, estado_idEstado FROM cidade LIMIT 1";
+            $result_default = mysqli_query($conexao, $sql_default_cidade);
+            if ($row = mysqli_fetch_assoc($result_default)) {
+                $idCidade = $row['idCidade'];
+                if ($idEstado == 0) {
+                    $idEstado = $row['estado_idEstado'];
+                }
+            } else {
+                // Se não houver cidades, usar 1 como padrão
+                $idCidade = 1;
+                $idEstado = 1;
+            }
+        }
+    } else {
+        // Para admin e lojista: estado e cidade são obrigatórios
+        $camposObrigatorios = ['nomeUsuario', 'emailUsuario', 'senha', 'tipoUsuario', 'idEstado', 'idCidade'];
+        $camposFaltantes = [];
+        
+        foreach ($camposObrigatorios as $campo) {
+            if (empty($_POST[$campo])) {
+                $camposFaltantes[] = $campo;
+            }
+        }
+        
+        if (!empty($camposFaltantes)) {
+            header("Location: ../../public/gerenciadorUsers.php?msg=Erro: Campos obrigatórios faltando: " . implode(', ', $camposFaltantes));
+            exit;
+        }
+        $idCidade = intval($_POST["idCidade"]);
+        $idEstado = intval($_POST["idEstado"]);
+    }
 
     $senhaHASH = hash('sha256', $senha);
 
@@ -60,6 +85,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !isset($_POST['update'])) {
         exit;
     }
 
+    // Verificar se a coluna whatsapp existe, se não, adicionar
+    $sql_check_whatsapp = "SHOW COLUMNS FROM usuario LIKE 'whatsapp'";
+    $result_check_whatsapp = mysqli_query($conexao, $sql_check_whatsapp);
+    if (mysqli_num_rows($result_check_whatsapp) == 0) {
+        $sql_add_whatsapp = "ALTER TABLE usuario ADD COLUMN whatsapp VARCHAR(20) NULL AFTER avatar_url";
+        mysqli_query($conexao, $sql_add_whatsapp);
+    }
+
     // Inserir usuário (todos os tipos)
     if ($tipoUsuario === 'lojista') {
         // Para lojista, adicionar loja_id (pode ser NULL inicialmente)
@@ -70,39 +103,145 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !isset($_POST['update'])) {
                     senhaHASH_Usuario,
                     tipoUsuario,
                     avatar_url,
+                    whatsapp,
                     UsuCriadoEm,
                     cidade_idCidade,
                     idEstado,
                     loja_id
-                ) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
         
         $stmt = mysqli_prepare($conexao, $sql);
-        mysqli_stmt_bind_param($stmt, "sssssiii", $nomeUsuario, $emailUsuario, $senhaHASH, $tipoUsuario, $avatar_url, $idCidade, $idEstado, $loja_id);
-    } else {
-        // Para outros tipos (admin, representante)
+        mysqli_stmt_bind_param($stmt, "ssssssiii", $nomeUsuario, $emailUsuario, $senhaHASH, $tipoUsuario, $avatar_url, $whatsapp, $idCidade, $idEstado, $loja_id);
+    } else if ($tipoUsuario === 'representante') {
+        // Para representante: cidade e estado são opcionais (usados apenas para o banco)
+        // Estados para Fale Conosco são salvos em campo de texto separado
+        $idCidade = !empty($_POST['idCidade']) ? intval($_POST['idCidade']) : 0;
+        $idEstado = !empty($_POST['idEstado']) ? intval($_POST['idEstado']) : 0;
+        
+        // Se não foi informado, buscar primeira cidade/estado como padrão
+        if ($idCidade == 0) {
+            $sql_default_cidade = "SELECT idCidade, estado_idEstado FROM cidade LIMIT 1";
+            $result_default = mysqli_query($conexao, $sql_default_cidade);
+            if ($row = mysqli_fetch_assoc($result_default)) {
+                $idCidade = $row['idCidade'];
+                if ($idEstado == 0) {
+                    $idEstado = $row['estado_idEstado'];
+                }
+            } else {
+                // Se não houver cidades, usar 1 como padrão
+                $idCidade = 1;
+                $idEstado = 1;
+            }
+        }
+        
+        // Verificar se existe coluna estados_fale_conosco, se não, criar
+        $sql_check_col = "SHOW COLUMNS FROM usuario LIKE 'estados_fale_conosco'";
+        $result_check_col = mysqli_query($conexao, $sql_check_col);
+        if (mysqli_num_rows($result_check_col) == 0) {
+            $sql_add_col = "ALTER TABLE usuario ADD COLUMN estados_fale_conosco TEXT NULL AFTER whatsapp";
+            mysqli_query($conexao, $sql_add_col);
+        }
+        
+        // Salvar estados para Fale Conosco (campo de texto)
+        $estados_fale_conosco = mysqli_real_escape_string($conexao, $_POST['estados_fale_conosco'] ?? '');
+        
         $sql = "INSERT INTO usuario (
                     nomeUsuario,
                     emailUsuario,
                     senhaHASH_Usuario,
                     tipoUsuario,
                     avatar_url,
+                    whatsapp,
+                    estados_fale_conosco,
                     UsuCriadoEm,
                     cidade_idCidade,
                     idEstado
-                ) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
         
         $stmt = mysqli_prepare($conexao, $sql);
-        mysqli_stmt_bind_param($stmt, "sssssii", $nomeUsuario, $emailUsuario, $senhaHASH, $tipoUsuario, $avatar_url, $idCidade, $idEstado);
+        mysqli_stmt_bind_param($stmt, "sssssssii", $nomeUsuario, $emailUsuario, $senhaHASH, $tipoUsuario, $avatar_url, $whatsapp, $estados_fale_conosco, $idCidade, $idEstado);
+    } else {
+        // Para admin
+        $sql = "INSERT INTO usuario (
+                    nomeUsuario,
+                    emailUsuario,
+                    senhaHASH_Usuario,
+                    tipoUsuario,
+                    avatar_url,
+                    whatsapp,
+                    UsuCriadoEm,
+                    cidade_idCidade,
+                    idEstado
+                ) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
+        
+        $stmt = mysqli_prepare($conexao, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssssii", $nomeUsuario, $emailUsuario, $senhaHASH, $tipoUsuario, $avatar_url, $whatsapp, $idCidade, $idEstado);
     }
 
-    if (mysqli_stmt_execute($stmt)) {
-        $cod = mysqli_insert_id($conexao);
-        header("Location: ../../public/gerenciadorUsers.php?msg=Usuário $nomeUsuario cadastrado com sucesso! ID: $cod");
-    } else {
-        $erro = mysqli_error($conexao);
-        header("Location: ../../public/gerenciadorUsers.php?msg=Erro ao cadastrar usuário: " . $erro);
+    try {
+        if (mysqli_stmt_execute($stmt)) {
+            $cod = mysqli_insert_id($conexao); // Pega o ID do novo usuário
+
+            // Vincular cidades de atuação ao representante (sistema principal)
+            if ($tipoUsuario === 'representante' && isset($_POST['cidades_vinculadas']) && !empty($_POST['cidades_vinculadas'])) {
+                // Pode vir como array ou string separada por vírgula
+                $cidades_input = $_POST['cidades_vinculadas'];
+                
+                if (is_string($cidades_input)) {
+                    // Se for string, converter para array
+                    $cidades = array_filter(array_map('intval', explode(',', $cidades_input)));
+                } else if (is_array($cidades_input)) {
+                    $cidades = array_filter(array_map('intval', $cidades_input));
+                } else {
+                    $cidades = [];
+                }
+                
+                if (!empty($cidades)) {
+                    foreach ($cidades as $cid) {
+                        if ($cid <= 0) continue; // Pular IDs inválidos
+                        
+                        // Verificar se a cidade já tem outro representante
+                        $sql_verifica = "SELECT representante_id, nomeCidade FROM cidade WHERE idCidade = ?";
+                        $stmt_verifica = mysqli_prepare($conexao, $sql_verifica);
+                        mysqli_stmt_bind_param($stmt_verifica, "i", $cid);
+                        mysqli_stmt_execute($stmt_verifica);
+                        $result_verifica = mysqli_stmt_get_result($stmt_verifica);
+                        $cidade_info = mysqli_fetch_assoc($result_verifica);
+                        
+                        if ($cidade_info && !empty($cidade_info['representante_id']) && $cidade_info['representante_id'] != $cod) {
+                            // Cidade já tem outro representante
+                            $sql_rep_atual = "SELECT nomeUsuario FROM usuario WHERE idUsuario = ?";
+                            $stmt_rep = mysqli_prepare($conexao, $sql_rep_atual);
+                            mysqli_stmt_bind_param($stmt_rep, "i", $cidade_info['representante_id']);
+                            mysqli_stmt_execute($stmt_rep);
+                            $result_rep = mysqli_stmt_get_result($stmt_rep);
+                            $rep_atual = mysqli_fetch_assoc($result_rep);
+                            $nome_rep_atual = $rep_atual['nomeUsuario'] ?? 'outro representante';
+                            
+                            throw new Exception("A cidade '{$cidade_info['nomeCidade']}' já está vinculada ao representante: $nome_rep_atual. Uma cidade só pode ter um representante.");
+                        }
+                        
+                        // Vincular cidade ao representante
+                        $sql_upd = "UPDATE cidade SET representante_id = ? WHERE idCidade = ?";
+                        $stmt_upd = mysqli_prepare($conexao, $sql_upd);
+                        mysqli_stmt_bind_param($stmt_upd, "ii", $cod, $cid);
+                        mysqli_stmt_execute($stmt_upd);
+                    }
+                }
+            }
+            // -----------------------------------------------------
+
+            header("Location: ../../public/gerenciadorUsers.php?msg=Usuário $nomeUsuario cadastrado com sucesso! ID: $cod");
+        } else {
+            header("Location: ../../public/gerenciadorUsers.php?msg=Erro ao cadastrar usuário: " . mysqli_error($conexao));
+        }
+    } catch (Exception $e) {
+        header("Location: ../../public/gerenciadorUsers.php?msg=" . urlencode($e->getMessage()));
     }
-    mysqli_stmt_close($stmt);
+    
+    if (isset($stmt)) {
+        mysqli_stmt_close($stmt);
+    }
     exit;
 }
 

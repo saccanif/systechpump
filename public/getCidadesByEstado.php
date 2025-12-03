@@ -10,7 +10,11 @@
     if (isset($_GET['estado_id']) && !empty($_GET['estado_id'])) {
         $estado_id = intval($_GET['estado_id']);
         
-        $sql = "SELECT idCidade, nomeCidade FROM cidade WHERE estado_idEstado = ? ORDER BY nomeCidade";
+        $sql = "SELECT c.idCidade, c.nomeCidade, e.siglaEstado 
+                FROM cidade c 
+                INNER JOIN estado e ON c.estado_idEstado = e.idEstado 
+                WHERE c.estado_idEstado = ? 
+                ORDER BY c.nomeCidade";
         $stmt = mysqli_prepare($conexao, $sql);
         
         if ($stmt) {

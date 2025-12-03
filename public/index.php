@@ -35,8 +35,8 @@
         <ul class="navbar-list">
           <li><a href="#quem-somos">Quem somos</a></li>
           <li><a href="#produtos">Produtos</a></li>
-          <li><a href="../src/view/vender1.html">Quero vender</a></li>
-          <li><a href="#fale-conosco">Fale conosco</a></li>
+          <li><a href="./queroVender.php">Quero vender</a></li>
+          <li><a href="./faleConosco.php">Fale conosco</a></li>
           <li><a href="./login.php">Entrar</a></li>
         </ul>
       </nav>
@@ -144,7 +144,7 @@
                   <figcaption>S-T8</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-t8" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -152,7 +152,7 @@
                   <figcaption>S-T16</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-t16" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -160,7 +160,7 @@
                   <figcaption>S-T8X</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-t8x" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -168,7 +168,7 @@
                   <figcaption>S-R1E</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-r1e" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -176,7 +176,7 @@
                   <figcaption>S-R1L</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-r1l" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -184,7 +184,7 @@
                   <figcaption>S-R8XL</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-s.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=s-r8xl" class="btn btn-border">Saiba Mais</a>
               </li>
             </ul>
           </section>
@@ -203,7 +203,7 @@
                   <figcaption>B-T1</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-b.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=b-t1" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -211,7 +211,7 @@
                   <figcaption>B-R1</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-b.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=b-r1" class="btn btn-border">Saiba Mais</a>
               </li>
             </ul>
           </section>
@@ -230,7 +230,7 @@
                   <figcaption>I-TV16</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-i.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=i-tv16" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -238,7 +238,7 @@
                   <figcaption>I-RV16</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-i.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=i-rv16" class="btn btn-border">Saiba Mais</a>
               </li>
             </ul>
           </section>
@@ -257,7 +257,7 @@
                   <figcaption>P-T1</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-p.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=p-t1" class="btn btn-border">Saiba Mais</a>
               </li>
               <li class="produto animate-on-view">
                 <figure>
@@ -265,7 +265,7 @@
                   <figcaption>P-R1</figcaption>
                 </figure>
 
-                <a href="../src/view/linhas/linha-p.html" class="btn btn-border">Saiba Mais</a>
+                <a href="./produto.php?produto=p-r1" class="btn btn-border">Saiba Mais</a>
               </li>
             </ul>
           </section>
@@ -275,40 +275,49 @@
 
     <section id="numeros">
       <div class="container section-content">
+        <header style="text-align: center; margin-bottom: 3rem;">
+          <h2 class="titulo">Nossos Números</h2>
+          <h3 class="subtitulo" style="margin-top: 1rem;">Crescendo junto com você</h3>
+        </header>
         <div class="numeros-content">
           <ul class="numeros-lista">
-            <li class="numero">
-              <div class="icon">
-                <i class="fa-solid fa-boxes-stacked fa-3x"></i>
+            <li class="numero animate-on-view">
+              <div class="numero-icon">
+                <i class="fa-solid fa-boxes-stacked"></i>
               </div>
-              <div class="texto">
-                <p>12</p>
-                <span>produtos</span>
-              </div>
-            </li>
-            <li class="numero">
-              <div class="icon">
-                <i class="fa-solid fa-shop fa-3x"></i>
-              </div>
-              <div class="texto">
-                <p>+125</p>
-                <span>lojas</span>
+              <div class="numero-texto">
+                <p class="numero-valor">12</p>
+                <span class="numero-label">Produtos</span>
               </div>
             </li>
-            <li class="numero">
-              <div class="icon">
-                <i class="fa-solid fa-city fa-3x"></i>
+            <li class="numero animate-on-view">
+              <div class="numero-icon">
+                <i class="fa-solid fa-shop"></i>
               </div>
-              <div class="texto">
-                <p>+50</p>
-                <span>cidades</span>
+              <div class="numero-texto">
+                <p class="numero-valor">+125</p>
+                <span class="numero-label">Lojas</span>
+              </div>
+            </li>
+            <li class="numero animate-on-view">
+              <div class="numero-icon">
+                <i class="fa-solid fa-city"></i>
+              </div>
+              <div class="numero-texto">
+                <p class="numero-valor">+50</p>
+                <span class="numero-label">Cidades</span>
+              </div>
+            </li>
+            <li class="numero animate-on-view">
+              <div class="numero-icon">
+                <i class="fa-solid fa-seedling"></i>
+              </div>
+              <div class="numero-texto">
+                <p class="numero-valor">100%</p>
+                <span class="numero-label">Satisfação</span>
               </div>
             </li>
           </ul>
-
-          <div class="mapa">
-            <img src="./imgs/others/brasil.png" />
-          </div>
         </div>
       </div>
     </section>
@@ -318,51 +327,60 @@
       <div class="container section-content">
         <header>
           <div class="fdf-titulo">
-            <i class="fa-solid fa-wifi fa-rotate-90 fa-3x"></i>
-            <h2 class="titulo">Tecnologia</h2>
-            <i class="fa-solid fa-wifi fa-rotate-270 fa-3x"></i>
+            <i class="fa-solid fa-wifi fa-rotate-90"></i>
+            <h2 class="titulo" style="color: white;">Tecnologia</h2>
+            <i class="fa-solid fa-wifi fa-rotate-270"></i>
           </div>
           <div class="fdf-subtitulo">
-            <h3 class="subtitulo">O fim dos fios</h3>
-            <img src="./imgs/others/cabo-cortado.png" alt="cabo cortado" />
+            <h3 class="subtitulo" style="color: white; font-size: 2rem;">O fim dos fios</h3>
+            <p style="color: white; font-size: 1.2rem; margin-top: 1rem; opacity: 0.9;">
+              Revolucionando a irrigação com tecnologia sem fio
+            </p>
           </div>
         </header>
 
         <div class="fdf-content">
-          <ul class="fdf-beneficios">
-            <li class="animate-on-view">
-              <p>Systech Pump</p>
+          <div class="fdf-beneficios-grid">
+            <div class="fdf-card animate-on-view">
+              <div class="fdf-card-icon">
+                <i class="fa-solid fa-satellite-dish"></i>
+              </div>
+              <h3>Acionamento Remoto</h3>
+              <p>Controle suas válvulas solenoides e bombas de irrigação via rádio, sem necessidade de fios ou microtubos.</p>
               <ul>
-                <li>
-                  <i class="fa-solid fa-circle-check fa-xl"></i>Acionamento de válvulas solenoides
-                </li>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Baixo custo</li>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Sustentável</li>
+                <li><i class="fa-solid fa-check"></i> Comunicação sem fio</li>
+                <li><i class="fa-solid fa-check"></i> Alcance ampliado</li>
+                <li><i class="fa-solid fa-check"></i> Sinal estável</li>
               </ul>
-            </li>
-            <li class="animate-on-view">
-              <p>Systech Pump</p>
+            </div>
+            <div class="fdf-card animate-on-view">
+              <div class="fdf-card-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <h3>Proteção Avançada</h3>
+              <p>Tecnologia blindada contra raios e falhas, garantindo máxima confiabilidade em qualquer condição climática.</p>
               <ul>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Acionamento de bombas</li>
-                <li>
-                  <i class="fa-solid fa-circle-check fa-xl"></i>Inversão de frequência de bombas
-                </li>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Tecnologia</li>
+                <li><i class="fa-solid fa-check"></i> Proteção contra raios</li>
+                <li><i class="fa-solid fa-check"></i> Resistente a intempéries</li>
+                <li><i class="fa-solid fa-check"></i> Alta durabilidade</li>
               </ul>
-            </li>
-            <li class="animate-on-view">
-              <p>Systech Pump</p>
+            </div>
+            <div class="fdf-card animate-on-view">
+              <div class="fdf-card-icon">
+                <i class="fa-solid fa-coffee"></i>
+              </div>
+              <h3>Ideal para Café</h3>
+              <p>Solução perfeita para culturas de café, melão e outras culturas que exigem irrigação precisa e eficiente.</p>
               <ul>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Plantação de café</li>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Acionamento de bombas</li>
-                <li><i class="fa-solid fa-circle-check fa-xl"></i>Acionamento de bombas</li>
+                <li><i class="fa-solid fa-check"></i> Otimizado para café</li>
+                <li><i class="fa-solid fa-check"></i> Economia de água</li>
+                <li><i class="fa-solid fa-check"></i> Sustentável</li>
               </ul>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-
     <section id="encontrar-loja">
       <div class="container section-content">
         <header>
@@ -371,88 +389,221 @@
         </header>
 
         <div class="encontrar-loja-content">
-          <form id="encontrar-loja-form" method="POST" action="./index.php">
-            <!-- <label>
-              Estado: <br />
-              <select name="estado">
-
-                <option value="" disabled selected>Escolha um estado</option> -->
-                <!-- conectando o banco e montando o combobox -->
-                <?php
-                // require_once '../config/connection.php';
-
-                // $sql = "select * from estado";
-                // $res = mysqli_query(conectarBD(), $sql);
-
-                // while ($registro = mysqli_fetch_assoc($res)) {
-                //   $estadoLoja = $registro["nomeEstado"];
-                //   $siglaLoja = $registro["siglaEstado"];
-
-                //   echo "<OPTION value = '$siglaLoja'>$estadoLoja</OPTION>";
-                // }
-                ?>
-
-              <!-- </select>
-            </label> -->
-
-            <!-- <label>
-              Cidade: <br />
-              <select name="cidade">
-                <option value="" disabled selected>Escolha uma cidade</option> -->
-                <!-- conectando o banco e montando o combobox -->
-                <?php
-                // require_once '../config/connection.php';
-
-                // $sql = "select * from cidade";
-                // $res = mysqli_query(conectarBD(), $sql);
-
-                // while ($registro = mysqli_fetch_assoc($res)) {
-                //   $cidadeLoja = $registro["nomeCidade"];
-                //   $idEstado = $registro["idCidade"];
-
-                //   echo "<OPTION value = '$idEstado'>$cidadeLoja</OPTION>";
-                // }
-                ?>
-              <!-- </select>
-            </label> -->
-<!-- 
-            <button class="btn">Buscar lojas</button> -->
-          </form>
-          <div class="loja-container">
-            <?php
-              require_once '../config/connection.php';
-
-              $sql = "SELECT * FROM lojas";
-              $res = mysqli_query(conectarBD(), $sql);
-
-              echo "<div class='loja-container'>";
-
-              while ($registro = mysqli_fetch_assoc($res)) {
-                $nomeLoja = $registro["nomeLoja"];
-                $telefone = $registro["telefoneLoja"];
-                $cidade = $registro["cidade_idCidade"];
-                $img = base64_encode($registro["fotoLoja"]);
-
-                echo "
-                  <div class='loja-item'>
-                      <img src='data:image/jpeg;base64,$img' alt='Foto da loja' />
-                      <p><b>$nomeLoja</b></p>
-                      <p><b>Telefone:</b> $telefone</p>
-                      <p><b>Endereço:</b> $cidade</p>
-                    </div>
-                  ";
-                }
-
-              echo "</div>";
-            ?>
-
+          <!-- LADO DIREITO: Mapa Estático do Brasil -->
+          <div class="loja-right-panel">
+            <img src="./imgs/others/brasil.png" alt="Brasil">
           </div>
-            
 
+          <!-- LADO ESQUERDO: Formulário e Resultados -->
+          <div class="loja-left-panel">
+            <!-- FORMULÁRIO DE BUSCA -->
+            <form id="encontrar-loja-form">
+              <div class="form-group">
+                <label for="estadoSelect">
+                  <i class="fas fa-map"></i> Estado:
+                </label>
+                <select name="estado" id="estadoSelect" required>
+                  <option value="">Escolha um estado</option>
+                  <?php
+                  require_once '../config/connection.php';
+                  $con = conectarBD();
+                  
+                  $sql = "SELECT * FROM estado ORDER BY nomeEstado";
+                  $res = mysqli_query($con, $sql);
+
+                  while ($reg = mysqli_fetch_assoc($res)) {
+                    echo "<option value='{$reg['idEstado']}'>{$reg['nomeEstado']}</option>";
+                  }
+                  mysqli_close($con);
+                  ?>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cidadeSelect">
+                  <i class="fas fa-city"></i> Cidade:
+                </label>
+                <select name="cidade" id="cidadeSelect" required disabled>
+                  <option value="">Escolha uma cidade</option>
+                </select>
+                <input type="text" id="cidadeManual" name="cidadeManual" 
+                       placeholder="Digite o nome da cidade" 
+                       style="display: none; margin-top: 0.5rem; width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px;">
+              </div>
+
+              <button type="submit" class="btn btn-buscar">
+                <i class="fas fa-search"></i> Buscar lojas
+              </button>
+            </form>
+
+            <!-- LISTA DE LOJAS -->
+            <div class="loja-container" id="lojaContainer">
+              <div class="loja-placeholder">
+                <i class="fas fa-store fa-3x"></i>
+                <p>Selecione seu estado e cidade para encontrar lojas próximas</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      </div>
     </section>
+
+    <script>
+      // Sistema de contagem de acessos removido - será feito via PHP
+
+      // Carregar cidades automaticamente quando o usuário escolhe o estado
+      document.getElementById('estadoSelect').addEventListener('change', function() {
+        const idEstado = this.value;
+        const cidadeSelect = document.getElementById('cidadeSelect');
+        const cidadeManual = document.getElementById('cidadeManual');
+        
+        if (!idEstado) {
+          cidadeSelect.innerHTML = '<option value="">Escolha uma cidade</option>';
+          cidadeSelect.disabled = true;
+          cidadeManual.style.display = 'none';
+          cidadeManual.value = '';
+          return;
+        }
+
+        cidadeSelect.disabled = true;
+        cidadeSelect.innerHTML = '<option value="">Carregando...</option>';
+        cidadeManual.style.display = 'none';
+        cidadeManual.value = '';
+
+        fetch(`./get_cidades.php?estado=${idEstado}`)
+          .then(resp => resp.text())
+          .then(html => {
+            cidadeSelect.innerHTML = html;
+            cidadeSelect.disabled = false;
+          })
+          .catch(error => {
+            console.error('Erro ao carregar cidades:', error);
+            cidadeSelect.innerHTML = '<option value="">Erro ao carregar cidades</option>';
+          });
+      });
+
+      // Mostrar/ocultar campo manual quando selecionar "Outra cidade"
+      document.getElementById('cidadeSelect').addEventListener('change', function() {
+        const cidadeManual = document.getElementById('cidadeManual');
+        if (this.value === 'outra') {
+          cidadeManual.style.display = 'block';
+          cidadeManual.required = true;
+        } else {
+          cidadeManual.style.display = 'none';
+          cidadeManual.required = false;
+          cidadeManual.value = '';
+        }
+      });
+
+      // Buscar lojas quando o formulário for enviado
+      document.getElementById('encontrar-loja-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const cidadeId = document.getElementById('cidadeSelect').value;
+        const cidadeManual = document.getElementById('cidadeManual').value;
+        const estadoId = document.getElementById('estadoSelect').value;
+        
+        if (!cidadeId || (cidadeId === 'outra' && !cidadeManual.trim())) {
+          alert('Por favor, selecione ou digite uma cidade');
+          return;
+        }
+
+        const container = document.getElementById('lojaContainer');
+        container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Buscando lojas...</div>';
+
+        try {
+          let response;
+          let data;
+          
+          // Se for cidade manual (não está no banco)
+          if (cidadeId === 'outra') {
+            // Buscar com nome da cidade manual - retornará vazio e mostrará sede
+            response = await fetch(`./buscarLojas.php?cidade_nome=${encodeURIComponent(cidadeManual)}&estado_id=${estadoId}`);
+            data = await response.json();
+          } else {
+            // Buscar lojas na cidade do banco
+            response = await fetch(`./buscarLojas.php?cidade_id=${cidadeId}`);
+            data = await response.json();
+          }
+
+          if (data.error) {
+            container.innerHTML = `<div class="loja-error"><i class="fas fa-exclamation-triangle"></i> ${data.error}</div>`;
+            return;
+          }
+
+          // Registrar acesso à cidade (apenas se cidade estiver no banco)
+          if (cidadeId && cidadeId !== 'outra') {
+            fetch(`./registrarAcesso.php?cidade_id=${cidadeId}`)
+              .catch(err => console.error('Erro ao registrar acesso:', err));
+          }
+
+          // Se não encontrou lojas e cidade está no banco, buscar em raio de 40km
+          if (!data.tem_lojas && cidadeId && cidadeId !== 'outra') {
+            const responseRaio = await fetch(`./buscarLojas.php?cidade_id=${cidadeId}&raio=1`);
+            data = await responseRaio.json();
+          }
+
+          // Exibir resultados
+          if (data.tem_lojas && data.lojas.length > 0) {
+            let html = '';
+            
+            // Adicionar mensagem se for busca em raio
+            if (data.busca_raio) {
+              html += `<div class="loja-aviso"><i class="fas fa-info-circle"></i> Não encontramos lojas na sua cidade. Mostrando lojas próximas em um raio de 40km:</div>`;
+            }
+            
+            // Processar lojas
+            data.lojas.forEach((loja) => {
+              const enderecoCompleto = `${loja.logradouro || ''} ${loja.numero || ''}, ${loja.bairro || ''} - ${loja.nomeCidade}/${loja.siglaEstado}`.trim();
+              const distancia = loja.distancia ? ` <span class="loja-distancia">(${loja.distancia} km)</span>` : '';
+              
+              html += `
+                <div class="loja-item">
+                  ${loja.fotoLoja ? `<img src="${loja.fotoLoja}" alt="${loja.nomeLoja}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                  ${!loja.fotoLoja ? '<div class="loja-icon"><i class="fas fa-store"></i></div>' : '<div class="loja-icon" style="display:none;"><i class="fas fa-store"></i></div>'}
+                  <div class="loja-info">
+                    <h4>${loja.nomeLoja}${distancia}</h4>
+                    ${enderecoCompleto ? `<p><i class="fas fa-map-marker-alt"></i> ${enderecoCompleto}</p>` : `<p><i class="fas fa-map-marker-alt"></i> ${loja.nomeCidade}/${loja.siglaEstado}</p>`}
+                    ${loja.telefoneLoja ? `<p><i class="fas fa-phone"></i> ${loja.telefoneLoja}</p>` : ''}
+                    ${loja.emailLoja ? `<p><i class="fas fa-envelope"></i> ${loja.emailLoja}</p>` : ''}
+                  </div>
+                </div>
+              `;
+            });
+            
+            container.innerHTML = html;
+          } else {
+            // Não encontrou lojas - mostrar card da sede
+            const sede = data.sede;
+            container.innerHTML = `
+              <div class="loja-sede">
+                <div class="sede-header">
+                  <i class="fas fa-building"></i>
+                  <h3>Nenhuma loja próxima encontrada</h3>
+                </div>
+                <div class="sede-info">
+                  <p>Entre em contato direto com a sede:</p>
+                  <div class="sede-details">
+                    <h4>${sede.nome}</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> ${sede.endereco}</p>
+                    <p><i class="fas fa-city"></i> ${sede.cidade} - ${sede.estado}</p>
+                    <p><i class="fas fa-phone"></i> ${sede.telefone}</p>
+                    <p><i class="fas fa-envelope"></i> ${sede.email}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+
+          }
+        } catch (error) {
+          console.error('Erro ao buscar lojas:', error);
+          container.innerHTML = '<div class="loja-error"><i class="fas fa-exclamation-triangle"></i> Erro ao buscar lojas. Tente novamente.</div>';
+        }
+      });
+    </script>
+
+
+
   </main>
 
   <footer>
@@ -472,8 +623,8 @@
           <ul>
             <li><a href="#quem-somos">Quem somos</a></li>
             <li><a href="#produtos">Produtos</a></li>
-            <li><a href="../src/view/vender1.html">Quero vender</a></li>
-            <li><a href="#fale-conosco">Fale conosco</a></li>
+            <li><a href="./queroVender.php">Quero vender</a></li>
+            <li><a href="./faleConosco.php">Fale conosco</a></li>
           </ul>
         </nav>
       </section>

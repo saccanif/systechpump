@@ -17,6 +17,7 @@
     $usuario = $_SESSION['usuario'];
     $nomeUsuario = $usuario['nomeUsuario'];
     $avatarUrl = $usuario['avatar_url'] ?? '';
+    $idUsuario = $usuario['idUsuario'];
     
     // Definir página de voltar baseada no tipo de usuário
     if ($tipoUsuario === 'admin') {
@@ -59,11 +60,18 @@
                 if (mysqli_num_rows($result_verifica) > 0) {
                     $erro = "Cidade já cadastrada neste estado";
                 } else {
-                    // Inserir nova cidade
-                    $sql_insere = "INSERT INTO cidade (nomeCidade, estado_idEstado, qtdaAcesso) 
-                                VALUES (?, ?, ?)";
-                    $stmt_insere = mysqli_prepare($conexao, $sql_insere);
-                    mysqli_stmt_bind_param($stmt_insere, "sii", $nomeCidade, $estado_idEstado, $qtdaAcesso);
+                    // Inserir nova cidade - se for representante, vincular a ele
+                    if ($tipoUsuario === 'representante') {
+                        $sql_insere = "INSERT INTO cidade (nomeCidade, estado_idEstado, qtdaAcesso, representante_id) 
+                                    VALUES (?, ?, ?, ?)";
+                        $stmt_insere = mysqli_prepare($conexao, $sql_insere);
+                        mysqli_stmt_bind_param($stmt_insere, "siii", $nomeCidade, $estado_idEstado, $qtdaAcesso, $idUsuario);
+                    } else {
+                        $sql_insere = "INSERT INTO cidade (nomeCidade, estado_idEstado, qtdaAcesso) 
+                                    VALUES (?, ?, ?)";
+                        $stmt_insere = mysqli_prepare($conexao, $sql_insere);
+                        mysqli_stmt_bind_param($stmt_insere, "sii", $nomeCidade, $estado_idEstado, $qtdaAcesso);
+                    }
 
                     if (mysqli_stmt_execute($stmt_insere)) {
                         $sucesso = "Cidade cadastrada com sucesso!";
@@ -162,6 +170,13 @@
     $where_conditions = [];
     $params = [];
     $types = "";
+
+    // Se for representante, mostrar apenas suas cidades (vinculadas pelo admin ou criadas por ele)
+    if ($tipoUsuario === 'representante') {
+        $where_conditions[] = "c.representante_id = ?";
+        $params[] = $idUsuario;
+        $types .= "i";
+    }
 
     if (!empty($filtro_nome)) {
         $where_conditions[] = "c.nomeCidade LIKE ?";
@@ -303,7 +318,7 @@
                     <a href="<?php echo $voltar; ?>" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
-                    <h1 class="mb-0">Gerenciar Cidades</h1> 
+                    <h1 class="mb-0"><i class="fas fa-map-marker-alt"></i> Gerenciar Cidades</h1> 
                 </div>
                 <div class="header-right">
                     <div class="user-info">

@@ -34,6 +34,12 @@ $conexao = conectarBD();
 $filtro_nome = $_GET['filtro_nome'] ?? '';
 $filtro_cidade = $_GET['filtro_cidade'] ?? '';
 
+// Verificar se há solicitação aceita para pré-preencher formulário
+$solicitacao_aceita = null;
+if (isset($_GET['criar_loja']) && isset($_SESSION['solicitacao_aceita'])) {
+    $solicitacao_aceita = $_SESSION['solicitacao_aceita'];
+}
+
 // Buscar lojas para a tabela com filtros
 $where_conditions = [];
 $params = [];
@@ -97,12 +103,29 @@ if (!empty($params)) {
 mysqli_stmt_execute($stmt_lojas);
 $result_lojas = mysqli_stmt_get_result($stmt_lojas);
 
-// Buscar cidades para os selects
-$sql_cidades = "SELECT c.idCidade, c.nomeCidade, e.siglaEstado 
-                FROM cidade c 
-                INNER JOIN estado e ON c.estado_idEstado = e.idEstado 
-                ORDER BY e.nomeEstado, c.nomeCidade";
-$result_cidades = mysqli_query($conexao, $sql_cidades);
+// Buscar cidades para os selects - filtrar por representante se for representante
+if ($tipoUsuario === 'representante') {
+    $sql_cidades = "SELECT c.idCidade, c.nomeCidade, e.siglaEstado, e.idEstado 
+                    FROM cidade c 
+                    INNER JOIN estado e ON c.estado_idEstado = e.idEstado 
+                    WHERE c.representante_id = ?
+                    ORDER BY e.nomeEstado, c.nomeCidade";
+    $stmt_cidades = mysqli_prepare($conexao, $sql_cidades);
+    mysqli_stmt_bind_param($stmt_cidades, "i", $idUsuario);
+    mysqli_stmt_execute($stmt_cidades);
+    $result_cidades = mysqli_stmt_get_result($stmt_cidades);
+} else {
+    // Admin vê todas as cidades (será filtrado via JavaScript quando selecionar representante)
+    $sql_cidades = "SELECT c.idCidade, c.nomeCidade, e.siglaEstado, e.idEstado 
+                    FROM cidade c 
+                    INNER JOIN estado e ON c.estado_idEstado = e.idEstado 
+                    ORDER BY e.nomeEstado, c.nomeCidade";
+    $result_cidades = mysqli_query($conexao, $sql_cidades);
+}
+
+// Buscar estados para criar nova cidade
+$sql_estados = "SELECT idEstado, nomeEstado, siglaEstado FROM estado ORDER BY nomeEstado";
+$result_estados = mysqli_query($conexao, $sql_estados);
 
 // Buscar loja específica para edição (com verificação de permissão)
 $loja_edicao = null;
@@ -404,7 +427,7 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                                 <label for="representante_id" class="form-label">
                                     <i class="fas fa-user-tie me-2"></i>Representante *
                                 </label>
-                                <select class="form-control" id="representante_id" name="representante_id" required>
+                                <select class="form-control" id="representante_id" name="representante_id" required onchange="filtrarCidadesPorRepresentante()">
                                     <option value="">Selecione o representante</option>
                                     <?php
                                     $sql_representantes = "SELECT idUsuario, nomeUsuario FROM usuario WHERE tipoUsuario = 'representante'";
@@ -417,11 +440,14 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                                         <?php endwhile; ?>
                                     <?php endif; ?>
                                 </select>
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle"></i> Ao selecionar um representante, apenas as cidades vinculadas a ele serão exibidas.
+                                </small>
                             </div>
                         </div>
                     </div>
                     <?php else: ?>
-                        <input type="hidden" name="representante_id" value="<?php echo $idUsuario; ?>">
+                        <input type="hidden" name="representante_id" id="representante_id" value="<?php echo $idUsuario; ?>">
                     <?php endif; ?>
                     
                     <div class="row">
@@ -431,6 +457,7 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                                     <i class="fas fa-store me-2"></i>Nome da Loja *
                                 </label>
                                 <input type="text" class="form-control" id="nomeLoja" name="nomeLoja" required 
+                                    value="<?php echo isset($solicitacao_aceita) ? htmlspecialchars($solicitacao_aceita['nome']) : ''; ?>"
                                     placeholder="Digite o nome da loja">
                             </div>
                         </div>
@@ -440,6 +467,7 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                                     <i class="fas fa-phone me-2"></i>Telefone
                                 </label>
                                 <input type="text" class="form-control" id="telefoneLoja" name="telefoneLoja" 
+                                    value="<?php echo isset($solicitacao_aceita) ? htmlspecialchars($solicitacao_aceita['telefone']) : ''; ?>"
                                     placeholder="(00) 00000-0000">
                             </div>
                         </div>
@@ -449,12 +477,28 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="emailLoja" class="form-label">
-                                    <i class="fas fa-envelope me-2"></i>E-mail da Loja
+                                    <i class="fas fa-envelope me-2"></i>E-mail da Loja *
                                 </label>
-                                <input type="email" class="form-control" id="emailLoja" name="emailLoja" 
+                                <input type="email" class="form-control" id="emailLoja" name="emailLoja" required
+                                    value="<?php echo isset($solicitacao_aceita) ? htmlspecialchars($solicitacao_aceita['email']) : ''; ?>"
                                     placeholder="loja@exemplo.com">
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="senhaLoja" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Senha para Login da Loja *
+                                </label>
+                                <input type="password" class="form-control" id="senhaLoja" name="senhaLoja" required
+                                    placeholder="Digite a senha para o login">
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle"></i> Esta senha será usada para o lojista fazer login no sistema.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="fotoLoja" class="form-label">
@@ -500,24 +544,87 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
                         </div>
                     </div>
 
+                    <!-- Seleção/Criação de Cidade -->
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label for="cidade_idCidade" class="form-label">
+                                <label class="form-label">
                                     <i class="fas fa-map-marker-alt me-2"></i>Cidade *
                                 </label>
-                                <select class="form-control" id="cidade_idCidade" name="cidade_idCidade" required>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="tipoCidade" id="cidadeExistente" value="existente" checked onchange="toggleTipoCidade()">
+                                    <label class="form-check-label" for="cidadeExistente">
+                                        Selecionar cidade existente
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="tipoCidade" id="cidadeNova" value="nova" onchange="toggleTipoCidade()">
+                                    <label class="form-check-label" for="cidadeNova">
+                                        Criar nova cidade
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selecionar Cidade Existente -->
+                    <div class="row" id="containerCidadeExistente">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="cidade_idCidade" class="form-label">
+                                    <i class="fas fa-list me-2"></i>Selecione a cidade
+                                </label>
+                                <select class="form-control" id="cidade_idCidade" name="cidade_idCidade">
                                     <option value="">Selecione a cidade</option>
                                     <?php 
-                                    mysqli_data_seek($result_cidades, 0);
-                                    if ($result_cidades): ?>
-                                        <?php while ($cidade = mysqli_fetch_assoc($result_cidades)): ?>
-                                            <option value="<?php echo $cidade['idCidade']; ?>">
+                                    if ($result_cidades): 
+                                        mysqli_data_seek($result_cidades, 0);
+                                        while ($cidade = mysqli_fetch_assoc($result_cidades)): 
+                                            $selected = (isset($solicitacao_aceita) && $solicitacao_aceita['cidade_idCidade'] == $cidade['idCidade']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo $cidade['idCidade']; ?>" data-estado="<?php echo $cidade['estado_idEstado'] ?? ''; ?>" <?php echo $selected; ?>>
                                                 <?php echo $cidade['nomeCidade'] . ' - ' . $cidade['siglaEstado']; ?>
                                             </option>
                                         <?php endwhile; ?>
                                     <?php endif; ?>
                                 </select>
+                                <?php if ($tipoUsuario === 'representante'): ?>
+                                    <small class="form-text text-muted">
+                                        <i class="fas fa-info-circle"></i> Apenas cidades vinculadas ao seu representante são exibidas.
+                                    </small>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Criar Nova Cidade -->
+                    <div class="row" id="containerCidadeNova" style="display: none;">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="estado_idEstado" class="form-label">
+                                    <i class="fas fa-map me-2"></i>Estado *
+                                </label>
+                                <select class="form-control" id="estado_idEstado" name="estado_idEstado">
+                                    <option value="">Selecione o estado</option>
+                                    <?php 
+                                    if ($result_estados): 
+                                        while ($estado = mysqli_fetch_assoc($result_estados)): ?>
+                                            <option value="<?php echo $estado['idEstado']; ?>">
+                                                <?php echo $estado['nomeEstado'] . ' (' . $estado['siglaEstado'] . ')'; ?>
+                                            </option>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nomeCidade" class="form-label">
+                                    <i class="fas fa-city me-2"></i>Nome da Cidade *
+                                </label>
+                                <input type="text" class="form-control" id="nomeCidade" name="nomeCidade" 
+                                    placeholder="Digite o nome da cidade">
+                                <input type="hidden" name="criarNovaCidade" id="criarNovaCidade" value="0">
                             </div>
                         </div>
                     </div>
@@ -693,12 +800,119 @@ unset($_SESSION['sucesso'], $_SESSION['erro']);
             }
         }
 
-        // Abrir modal de edição se houver parâmetro na URL
+        function toggleTipoCidade() {
+            const cidadeExistente = document.getElementById('cidadeExistente').checked;
+            const containerExistente = document.getElementById('containerCidadeExistente');
+            const containerNova = document.getElementById('containerCidadeNova');
+            const selectCidade = document.getElementById('cidade_idCidade');
+            const inputNomeCidade = document.getElementById('nomeCidade');
+            const selectEstado = document.getElementById('estado_idEstado');
+            const hiddenCriarNova = document.getElementById('criarNovaCidade');
+
+            if (cidadeExistente) {
+                containerExistente.style.display = 'block';
+                containerNova.style.display = 'none';
+                selectCidade.required = true;
+                inputNomeCidade.required = false;
+                selectEstado.required = false;
+                hiddenCriarNova.value = '0';
+            } else {
+                containerExistente.style.display = 'none';
+                containerNova.style.display = 'block';
+                selectCidade.required = false;
+                inputNomeCidade.required = true;
+                selectEstado.required = true;
+                hiddenCriarNova.value = '1';
+            }
+        }
+
+        // Filtrar cidades por representante (para admin)
+        function filtrarCidadesPorRepresentante() {
+            const representanteId = document.getElementById('representante_id').value;
+            const selectCidade = document.getElementById('cidade_idCidade');
+            
+            if (!representanteId) {
+                // Se não há representante selecionado, mostrar todas as cidades
+                location.reload();
+                return;
+            }
+
+            // Buscar cidades do representante via AJAX
+            fetch(`getCidadesByRepresentante.php?representante_id=${representanteId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Erro:', data.error);
+                        return;
+                    }
+                    
+                    // Limpar opções existentes (exceto a primeira)
+                    selectCidade.innerHTML = '<option value="">Selecione a cidade</option>';
+                    
+                    // Adicionar novas opções
+                    data.forEach(cidade => {
+                        const option = document.createElement('option');
+                        option.value = cidade.idCidade;
+                        option.textContent = `${cidade.nomeCidade} - ${cidade.siglaEstado}`;
+                        option.setAttribute('data-estado', cidade.idEstado);
+                        selectCidade.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar cidades:', error);
+                });
+        }
+
+        // Validar formulário antes de enviar
+        document.addEventListener('DOMContentLoaded', function() {
+            const formLoja = document.querySelector('form[action="../src/controllers/StoresController.php"]');
+            if (formLoja) {
+                formLoja.addEventListener('submit', function(e) {
+                    const cidadeExistente = document.getElementById('cidadeExistente').checked;
+                    const selectCidade = document.getElementById('cidade_idCidade');
+                    const inputNomeCidade = document.getElementById('nomeCidade');
+                    const selectEstado = document.getElementById('estado_idEstado');
+                    const representanteId = document.getElementById('representante_id');
+
+                    // Validar representante (se admin)
+                    <?php if ($tipoUsuario === 'admin'): ?>
+                    if (!representanteId || !representanteId.value) {
+                        e.preventDefault();
+                        alert('Por favor, selecione um representante.');
+                        return false;
+                    }
+                    <?php endif; ?>
+
+                    if (cidadeExistente) {
+                        if (!selectCidade.value) {
+                            e.preventDefault();
+                            alert('Por favor, selecione uma cidade existente.');
+                            return false;
+                        }
+                    } else {
+                        if (!inputNomeCidade.value || !selectEstado.value) {
+                            e.preventDefault();
+                            alert('Para criar uma nova cidade, é necessário informar o nome da cidade e o estado.');
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
+
+        // Abrir modal de edição se houver parâmetro na URL ou se vier de solicitação aceita
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('editar')) {
                 abrirModal('editLojaModal');
             }
+            
+            // Abrir modal automaticamente se vier de solicitação aceita
+            <?php if (isset($_GET['criar_loja']) && isset($solicitacao_aceita)): ?>
+            if (urlParams.has('criar_loja')) {
+                abrirModal('addLojaModal');
+            }
+            <?php endif; ?>
             
             // Mostrar filtros se algum filtro estiver ativo
             const filtros = ['filtro_nome', 'filtro_cidade'];

@@ -57,6 +57,35 @@ if ($result_pedidos) {
 } else {
     $qtdPedidos = 0;
 }
+
+// Buscar quantidade de solicitações pendentes do representante
+$sql_solicitacoes_pendentes = "SELECT COUNT(*) as total FROM solicitacoes 
+                                WHERE destinatario_id = ? AND status = 'pendente'";
+$stmt_solicitacoes = mysqli_prepare($conexao, $sql_solicitacoes_pendentes);
+mysqli_stmt_bind_param($stmt_solicitacoes, "i", $idUsuario);
+mysqli_stmt_execute($stmt_solicitacoes);
+$result_solicitacoes = mysqli_stmt_get_result($stmt_solicitacoes);
+
+if ($result_solicitacoes) {
+    $row_solicitacoes = mysqli_fetch_assoc($result_solicitacoes);
+    $qtdSolicitacoesPendentes = $row_solicitacoes ? $row_solicitacoes['total'] : 0;
+} else {
+    $qtdSolicitacoesPendentes = 0;
+}
+
+// Buscar última solicitação do representante
+$sql_ultima_solicitacao = "SELECT s.*, c.nomeCidade, e.siglaEstado 
+                           FROM solicitacoes s
+                           INNER JOIN cidade c ON s.cidade_idCidade = c.idCidade
+                           INNER JOIN estado e ON s.estado_idEstado = e.idEstado
+                           WHERE s.destinatario_id = ?
+                           ORDER BY s.data_solicitacao DESC
+                           LIMIT 1";
+$stmt_ultima = mysqli_prepare($conexao, $sql_ultima_solicitacao);
+mysqli_stmt_bind_param($stmt_ultima, "i", $idUsuario);
+mysqli_stmt_execute($stmt_ultima);
+$result_ultima = mysqli_stmt_get_result($stmt_ultima);
+$ultimaSolicitacao = mysqli_fetch_assoc($result_ultima);
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +109,7 @@ if ($result_pedidos) {
             
             <ul class="sidebar-menu">
                 <li><a href="./representante.php" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="./gerenciadorRelatorios.php"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="./gerenciadorInsights.php"><i class="fas fa-chart-line"></i> Insights</a></li>
                 <li><a href="./gerenciadorSolicitacoes.php"><i class="fas fa-inbox"></i> Solicitações</a></li>
                 <li><a href="./gerenciadorPedidos.php"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
                 <li><a href="./gerenciadorLojas.php"><i class="fas fa-store"></i> Lojas</a></li>
@@ -136,8 +165,8 @@ if ($result_pedidos) {
                             <i class="fas fa-valve-open"></i>
                         </div>
                         <div class="card-info">
-                            <h3>0</h3>
-                            <p>Solicitações</p>
+                            <h3><?= $qtdSolicitacoesPendentes ?></h3>
+                            <p>Solicitações Pendentes</p>
                         </div>
                     </div>
                     
@@ -162,40 +191,60 @@ if ($result_pedidos) {
                     </div>
                 </div>
 
-                <!-- Solicitações de Lojas -->
+                <!-- Última Solicitação -->
                 <div class="table-container">
                     <div class="table-header">
-                        <h3>Solicitações de Lojistas</h3>
+                        <h3>Última Solicitação</h3>
                         <div class="table-actions">
-                            <button class="btn btn-outline"><i class="fas fa-filter"></i> Filtrar</button>
-                            <button class="btn btn-primary"><i class="fas fa-sync"></i> Atualizar</button>
+                            <a href="./gerenciadorSolicitacoes.php" class="btn btn-primary"><i class="fas fa-inbox"></i> Ver Todas</a>
                         </div>
                     </div>
 
                     <div class="solicitations-list">
+                        <?php if ($ultimaSolicitacao): ?>
                         <div class="solicitation-card fade-in">
                             <div class="solicitation-header">
                                 <div class="solicitation-info">
-                                    <h4>Agropecuária Nova Era</h4>
+                                    <h4>
+                                        <i class="fas fa-<?php echo $ultimaSolicitacao['tipo'] === 'lojista' ? 'store' : 'user-tie'; ?>"></i>
+                                        <?php echo htmlspecialchars($ultimaSolicitacao['nome']); ?>
+                                    </h4>
                                     <div class="solicitation-meta">
-                                        <span><strong>CNPJ:</strong> 12.345.678/0001-90</span> | 
-                                        <span><strong>Telefone:</strong> (11) 99999-9999</span> | 
-                                        <span><strong>Data:</strong> 15/03/2025</span>
+                                        <span><strong>Tipo:</strong> <?php echo ucfirst($ultimaSolicitacao['tipo']); ?></span> | 
+                                        <span><strong>CNPJ:</strong> <?php echo htmlspecialchars($ultimaSolicitacao['cnpj']); ?></span> | 
+                                        <span><strong>Telefone:</strong> <?php echo htmlspecialchars($ultimaSolicitacao['telefone']); ?></span> | 
+                                        <span><strong>Data:</strong> <?php echo date('d/m/Y H:i', strtotime($ultimaSolicitacao['data_solicitacao'])); ?></span>
                                     </div>
                                 </div>
                                 <div class="solicitation-actions">
-                                    <button class="btn btn-success" onclick="openModal('approve')"><i class="fas fa-check"></i> Aprovar</button>
-                                    <button class="btn btn-danger" onclick="openModal('reject')"><i class="fas fa-times"></i> Recusar</button>
-                                    <button class="btn btn-outline"><i class="fas fa-eye"></i> Detalhes</button>
+                                    <?php if ($ultimaSolicitacao['status'] === 'pendente'): ?>
+                                        <a href="./gerenciadorSolicitacoes.php" class="btn btn-success"><i class="fas fa-check"></i> Aprovar</a>
+                                        <a href="./gerenciadorSolicitacoes.php" class="btn btn-danger"><i class="fas fa-times"></i> Recusar</a>
+                                    <?php else: ?>
+                                        <span class="badge <?php echo $ultimaSolicitacao['status'] === 'aceita' ? 'badge-success' : 'badge-danger'; ?>">
+                                            <?php echo ucfirst($ultimaSolicitacao['status']); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                    <a href="./gerenciadorSolicitacoes.php" class="btn btn-outline"><i class="fas fa-eye"></i> Detalhes</a>
                                 </div>
                             </div>
                             <div class="solicitation-body">
-                                <p><strong>E-mail:</strong> contato@agronovaera.com.br</p>
+                                <p><strong>E-mail:</strong> <?php echo htmlspecialchars($ultimaSolicitacao['email']); ?></p>
+                                <p><strong>Localização:</strong> <?php echo htmlspecialchars($ultimaSolicitacao['nomeCidade']); ?> - <?php echo $ultimaSolicitacao['siglaEstado']; ?></p>
                                 <div class="solicitation-message">
-                                    "Somos uma agropecuária estabelecida há 15 anos na região de Ribeirão Preto. Temos clientes em toda a região e acreditamos que os produtos System Pump terão boa aceitação devido à qualidade e tecnologia."
+                                    <strong>Mensagem:</strong><br>
+                                    <?php echo nl2br(htmlspecialchars($ultimaSolicitacao['mensagem'])); ?>
                                 </div>
                             </div>
                         </div>
+                        <?php else: ?>
+                        <div class="solicitation-card fade-in">
+                            <div class="solicitation-body text-center" style="padding: 2rem;">
+                                <i class="fas fa-inbox fa-3x" style="color: #ccc; margin-bottom: 1rem;"></i>
+                                <p style="color: #999;">Nenhuma solicitação encontrada</p>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
