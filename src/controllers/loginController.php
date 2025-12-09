@@ -3,8 +3,8 @@ session_start();
 
 require_once "../../config/connection.php";
 
-$usuario = $_POST['usuario'] ?? '';
-$senha = $_POST['senha'] ?? '';
+$usuario = $_POST['usuario'];
+$senha = $_POST['senha'];
 
 $conexao = conectarBD();
 
