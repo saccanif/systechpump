@@ -21,6 +21,10 @@ SET time_zone = "+00:00";
 -- Banco de dados: `systechpump`
 --
 
+CREATE DATABASE IF NOT EXISTS systechpump;
+
+USE systechpump;
+
 -- --------------------------------------------------------
 
 --
