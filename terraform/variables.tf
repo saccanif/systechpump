@@ -13,6 +13,6 @@ variable "db_username" {
 
 variable "db_password" { 
   type = string
-  default = "senhabd"
+  default = "Systech123"
   sensitive = true
 }
