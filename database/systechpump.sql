@@ -27,9 +27,6 @@ SET time_zone = "+00:00";
 -- Estrutura para tabela `acessos_cidade`
 --
 
-CREATE DATABASE systechpump;
-USE systechpump;
-
 CREATE TABLE `acessos_cidade` (
   `id` int(11) NOT NULL,
   `cidade_idCidade` int(11) NOT NULL,
